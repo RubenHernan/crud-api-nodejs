@@ -1,6 +1,7 @@
 const User = require('../models/user.model');
+const catchAsync = require('../utils/catchAsync');
 
-exports.list = async (req, res) => {
+exports.list = catchAsync(async (req, res) => {
   const { requestTime } = req;
 
   const users = await User.findAll();
@@ -12,42 +13,9 @@ exports.list = async (req, res) => {
     results: users.length,
     users,
   });
-};
+});
 
-exports.create = async (req, res) => {
-  const { requestTime } = req;
-  const { name, email, password, role } =
-    req.body;
-
-  const user = await User.findOne({
-    where: {
-      email,
-    },
-  });
-
-  if (user) {
-    return res.status(404).json({
-      status: 'error',
-      message:
-        'User with that email already exists',
-    });
-  }
-
-  const userCreate = await User.create({
-    name,
-    email,
-    password,
-    role,
-  });
-  res.status(201).json({
-    status: 'success',
-    message: 'The user has been created!',
-    requestTime,
-    userCreate,
-  });
-};
-
-exports.update = async (req, res) => {
+exports.update = catchAsync(async (req, res) => {
   const { user, requestTime } = req;
   const { name, email } = req.body;
 
@@ -61,9 +29,9 @@ exports.update = async (req, res) => {
     message: 'User updated successfully!',
     requestTime,
   });
-};
+});
 
-exports.show = async (req, res) => {
+exports.show = catchAsync(async (req, res) => {
   const { requestTime, user } = req;
 
   res.status(200).json({
@@ -72,9 +40,9 @@ exports.show = async (req, res) => {
     requestTime,
     user,
   });
-};
+});
 
-exports.delete = async (req, res) => {
+exports.delete = catchAsync(async (req, res) => {
   const { requestTime, user } = req;
 
   await user.update({
@@ -87,4 +55,4 @@ exports.delete = async (req, res) => {
     requestTime,
     user,
   });
-};
+});

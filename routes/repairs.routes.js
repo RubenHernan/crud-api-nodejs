@@ -1,16 +1,19 @@
 const express = require('express');
 const repairController = require('../controllers/repairs.controller');
 const repairMiddleware = require('../middlewares/repair.middleware');
+const validationMiddleware = require('../middlewares/validations.middleware');
+const authMiddleware = require('../middlewares/auth.middleware');
 
 const router = express.Router();
 
-router
-  .route('/')
-  .get(repairController.list)
-  .post(
-    repairMiddleware.validRepair,
-    repairController.create
-  );
+router.post(
+  validationMiddleware.repairValidation,
+  repairController.create
+);
+
+router.use(authMiddleware.restrictTo('employee'));
+
+router.route('/').get(repairController.list);
 
 router
   .route('/:id')
@@ -19,7 +22,6 @@ router
     repairController.show
   )
   .patch(
-    repairMiddleware.validRepair,
     repairMiddleware.validRepairPending,
     repairController.update
   )
