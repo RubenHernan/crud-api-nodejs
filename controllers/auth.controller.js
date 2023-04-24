@@ -2,6 +2,7 @@ const User = require('../models/user.model');
 const AppError = require('../utils/appErrors');
 const catchAsync = require('../utils/catchAsync');
 const bcrypt = require('bcryptjs');
+const generateJWT = require('../utils/jwt');
 
 //REGISTER USER
 exports.create = catchAsync(
@@ -67,7 +68,7 @@ exports.login = catchAsync(
     const user = await User.findOne({
       where: {
         email: email.toLowerCase(),
-        status: 'active',
+        status: 'available',
       },
     });
 

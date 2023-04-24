@@ -6,7 +6,9 @@ const authMiddleware = require('../middlewares/auth.middleware');
 
 const router = express.Router();
 
-router.post(
+router.use(authMiddleware.protect);
+
+router.route('/').post(
   validationMiddleware.repairValidation,
   repairController.create
 );

@@ -21,3 +21,5 @@ const generateJWT = (id) => {
     );
   });
 };
+
+module.exports = generateJWT;

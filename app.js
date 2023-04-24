@@ -5,6 +5,7 @@ const usersRoutes = require('./routes/users.routes');
 const repairsRoutes = require('./routes/repairs.routes');
 const authRouter = require('./routes/auth.routes');
 const globalErrorHandler = require('./controllers/error.controller');
+const AppError = require('./utils/appErrors');
 
 //1. MIDDLEWARES
 app.use(express.json());

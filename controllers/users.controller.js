@@ -51,7 +51,7 @@ exports.delete = catchAsync(async (req, res) => {
 
   res.status(200).json({
     status: 'success',
-    message: 'The query has been done!',
+    message: 'Deleted successfully',
     requestTime,
     user,
   });

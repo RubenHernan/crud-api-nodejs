@@ -1,8 +1,9 @@
 const catchAsync = require('./../utils/catchAsync');
-const AppError = require('./../utils/appError');
+
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 const User = require('../models/user.model');
+const AppError = require('../utils/appErrors');
 
 exports.protect = catchAsync(
   async (req, res, next) => {
@@ -28,20 +29,22 @@ exports.protect = catchAsync(
         )
       );
     }
-
+ 
     //3. decodificar el jwt
     const decoded = await promisify(jwt.verify)(
       token,
       process.env.SECRET_JWT_SEED
     );
+  
+    //vertificar si exppiro ya que si expira no puede renovar token, deberia pedir que se vuelva a loguear
 
-    //vertificar si exppiro.
+//verificar si el token le pertenece al usuario (es posible?) 
 
     //4. buscar el usuario y validar si existe
     const user = await User.findOne({
       where: {
         id: decoded.id,
-        status: 'active',
+        status: 'available',
       },
     });
 
